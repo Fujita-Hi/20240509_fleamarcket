@@ -21,7 +21,7 @@
         <x-input-error :messages="$errors->get('password')" class="mt-2" />
 
 
-        <x-primary-button class="ms-3">
+        <x-primary-button>
             {{ __('ログインする') }}
         </x-primary-button>
         <a href="/register">会員登録はこちら</a>

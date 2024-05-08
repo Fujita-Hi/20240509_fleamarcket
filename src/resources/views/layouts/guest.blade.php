@@ -20,7 +20,7 @@
                 <a href="/"><img src="img/logo.svg" alt="" class="header__logo"></a>
             </div>
         </header>
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        <div>
             {{ $slot }}
         </div>
     </body>

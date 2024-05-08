@@ -17,7 +17,7 @@
 
         <x-input-error :messages="$errors->get('password')" class="mt-2" />
 
-        <x-primary-button class="ms-4">{{ __('登録') }}</x-primary-button>
+        <x-primary-button>{{ __('登録') }}</x-primary-button>
         <a href="{{ route('login') }}">{{ __('ログインはこちら') }}</a>
     </form>
 </x-guest-layout>
