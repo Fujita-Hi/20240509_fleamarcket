@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Stripe\PaymentIntent;
-
 use App\Models\History;
+use App\Http\Requests\PayRequest;
 
 class PaymentController extends Controller
 {
@@ -24,7 +24,7 @@ class PaymentController extends Controller
         return view('/mypage');
     }
 
-    public function paycreate(Request $request){
+    public function paycreate(PayRequest $request){
         $payment_method = session('temp_method');
         return view('paycreate', ['payment_method' =>$payment_method, 'item_info' => $request]);
     }
@@ -34,7 +34,7 @@ class PaymentController extends Controller
         \Stripe\Stripe::setApiKey(config('cashier.secret'));
         try {
             if ($request->method == 'konbini'){
-                $paymentIntent = \Stripe\PaymentIntent::create([
+                $paymentIntent = PaymentIntent::create([
                     'amount' => $request->amount, // 金額を設定
                     'currency' => 'jpy', // 通貨を設定
                     'payment_method_types' => ['konbini'],

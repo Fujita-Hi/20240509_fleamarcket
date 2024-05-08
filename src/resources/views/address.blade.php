@@ -6,8 +6,15 @@
 
 @section('content')
 <div class="addr__contents">
-    <form action="/temp_addr">
+    <form action="/temp_addr" method="POST">
         @csrf
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li class="error__message">{{$error}}</li>
+                @endforeach
+            </ul>
+        @endif
         <input name="item_id" type="hidden" value="{{ $item_id }}">
         <h1 class="addr__title">住所の変更</h1>
         <h2 class="addr__code">郵便番号</h2>
@@ -17,6 +24,7 @@
         <h2 class="addr__Building">建物名</h2>
         <input name="building" type="text" value="{{ $user_addr->building }}">
         <button>更新する</button>
+        
     </form>
 </div>
 @endsection

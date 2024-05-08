@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="purchase__payment">
-        <form action="/payment_method" method="get">
+        <form action="/payment_method" method="post">
             <div class="purchase__payment--header">
                 <h2>支払い方法</h2>
                 <button class="purchase__payment--button">変更する</button>
@@ -27,7 +27,7 @@
     <div class="purchase__addr">
         <div class="purchase__addr--header">
             <h2>配送先</h2>
-            <a href="/address/{{$item->id}}">変更する</a>
+            <a href="/purchase/address/{{$item->id}}">変更する</a>
         </div>
         <table class="purchase__addr--detail">
                 <tr>
@@ -70,8 +70,20 @@
         <input type="hidden" name="item_id" value="{{ $item->id }}">
         <input type="hidden" name="amount" value="{{ $item->price }}">
         <input type="hidden" name="name" value="{{ $item->name }}">
-        <button>購入する</button>
+        <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+        <input type="hidden" name="code" value="{{ $user_addr->code }}">
+        <input type="hidden" name="addr" value="{{ $user_addr->addr }}">
+        <input type="hidden" name="building" value="{{ $user_addr->building }}">
+
+        <button class="item__purchase">購入する</button>
     </form>
+    @if (count($errors) > 0)
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="error__message">{{$error}}</li>
+            @endforeach
+        </ul>
+    @endif
 </div>
 
 @endsection

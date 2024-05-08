@@ -1,32 +1,32 @@
 main {
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.addr__contents {
-    width: 100%;
+.sell__contents {
+    width: 60%;
     justify-content: center;
     display: flex;
     margin-top: 50px;
 }
 
-.addr__title {
+.sell__contents form {
+    width: 100%;
+}
+
+.sell__title {
     text-align: center;
     margin-bottom: 30px;
 }
 
-.addr__contents input {
-    width: 40vw;
+.sell__contents input {
+    width: 100%;
     margin-bottom: 60px;
     height: 2em;
 }
 
-.addr__contents textarea {
-    width: 40vw;
-    margin-bottom: 60px;
-}
-
-.addr__contents textarea {
-    width: 40vw;
+.sell__contents textarea {
+    width: 100%;
     margin-bottom: 60px;
 }
 
@@ -34,14 +34,15 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    border: 1px dotted red;
+    border: 1px dotted black;
     color: red;
     padding: 2em 0;
     border-radius: 5px;
     background: none;
+    margin-bottom: 30px;
 }
 
-.addr__contents button {
+.sell__contents button {
     display: flex;
     background: red;
     color: white;
@@ -53,6 +54,7 @@ main {
     border-radius: 5px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 h1 {
@@ -70,4 +72,18 @@ h3 {
 
 hr {
     margin-bottom: 20px;
+}
+
+#form__image {
+    display: none;
+}
+
+.upload__label {
+    margin-left: 15px;
+    border: 1px solid red;
+    padding: 5px 20px;
+    color: red;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: .3s;
 }

@@ -3,7 +3,7 @@ main {
 }
 
 .purchase__item--img {
-    width: 120px;
+    width: 150px;
     height: 150px;
     background: gray;
     margin-right: 60px;
@@ -22,7 +22,7 @@ main {
     flex: 3;
 }
 
-@media all and (min-width: 768px) {
+@media all and (min-width: 1050px) {
     main {
         display: flex;
     }
@@ -34,6 +34,10 @@ main {
 
 .purchase__item {
     display: flex;
+}
+
+.purchase__addr {
+    margin-bottom: 20px;
 }
 
 .purchase__payment--header,
@@ -59,7 +63,7 @@ main {
 }
 
 .purchase__addr--header {
-    margin-top: 200px;
+    margin-top: 50px;
 }
 
 .purchase__addr--detail {
@@ -87,4 +91,13 @@ main {
     height: 2em;
     font-size: 1.5em;
     border-radius: 5px;
+}
+
+.item__purchase {
+    width: 100%;
+    padding: 0.5em 8vw;
+    background: red;
+    color: white;
+    border: none;
+    margin-bottom: 20px;
 }

@@ -27,7 +27,7 @@
         document.getElementById('mylist-list').style.display = 'none';
         document.getElementById('recommended-btn').style.color = "red";
         document.getElementById('recommended-btn').style.fontWeight = "bold";
-        document.getElementById('mylist-btn').style.color = "";
+        document.getElementById('mylist-btn').style.color = "black";
         document.getElementById('mylist-btn').style.fontWeight = "";
     };
 
@@ -36,7 +36,7 @@
         document.getElementById('mylist-list').style.display = 'block';
         document.getElementById('mylist-btn').style.color = "red";
         document.getElementById('mylist-btn').style.fontWeight = "bold";
-        document.getElementById('recommended-btn').style.color = "";
+        document.getElementById('recommended-btn').style.color = "black";
         document.getElementById('recommended-btn').style.fontWeight = "";
     };
 </script>

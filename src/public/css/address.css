@@ -1,12 +1,17 @@
 main {
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .addr__contents {
-    width: 100%;
+    width: 60%;
     justify-content: center;
     display: flex;
     margin-top: 50px;
+}
+
+.addr__contents form {
+    width: 100%;
 }
 
 .addr__title {
@@ -15,7 +20,7 @@ main {
 }
 
 .addr__contents input {
-    width: 40vw;
+    width: 100%;
     margin-bottom: 60px;
     height: 2em;
 }

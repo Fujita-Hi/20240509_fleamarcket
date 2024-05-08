@@ -1,10 +1,10 @@
 main {
-    margin: 100px 8vw 0 8vw;
+    margin: 50px 8vw 0 8vw;
 }
 
 .item__img {
-    width: 30vw;
-    height: 30vw;
+    width: 70vw;
+    height: 70vw;
     background: gray;
 }
 
@@ -22,9 +22,20 @@ main {
     background-size: cover;
 }
 
+.item__detail {
+    width: 80%;
+}
+
 @media all and (min-width: 768px) {
     main {
         display: flex;
+        margin: 100px 8vw 0 8vw;
+    }
+
+    .item__img {
+        width: 30vw;
+        height: 30vw;
+        background: gray;
     }
 }
 

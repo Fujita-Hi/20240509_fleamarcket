@@ -15,6 +15,7 @@ li {
 
 header {
     background-color: black;
+    justify-content: space-between;
 }
 
 .header__flex {
@@ -23,17 +24,6 @@ header {
     align-items: center;
 }
 
-.header__flex nav {
-    margin-left: auto;
-}
-
-.header__flex ul {
-    display: flex;
-}
-
-.header__flex ul li {
-    margin-left: 30px;
-}
 
 .header__flex a {
     text-decoration: none;
@@ -45,25 +35,172 @@ header {
 }
 
 .header__search {
+    display: flex;
     margin-left: 2em;
-    padding-left: 1em;
     border: none;
     outline: none;
     background: white;
     border-radius: 0.1em;
     height: 2em;
-    width: 25em;
+    width: 20em;
+    align-items: center;
 }
 
 .header__login,
 .header__register,
-.header__nav-item-link {
+.header__nav-item-link,
+.header__sell {
     color: white;
 }
 
-.header__sell {
-    color: black;
-    background: white;
-    padding: 0.2em 1em;
-    border-radius: 0.1em;
+@media all and (min-width: 1080px) {
+    .header__nav--burger {
+        display: none;
+    }
+
+    .header__flex nav {
+        margin-left: auto;
+    }
+
+    .header__flex ul {
+        display: flex;
+    }
+
+    .header__flex ul li {
+        margin-left: 30px;
+    }
+
+    .header__sell {
+        background-color: white;
+        color: black;
+        padding: 0.3em 1em;
+        border-radius: 0.1em;
+    }
+}
+
+@media all and (max-width: 1080px) {
+    .header__nav {
+        display: none;
+    }
+
+    .header__nav--burger {
+        margin-left: auto;
+    }
+
+    .burger__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .burger__content ul {
+        display: flex;
+    }
+
+    .burger__content li {
+        padding: 0 0.5em;
+    }
+
+    .drawer_open {
+        display: flex;
+        margin-right: 1em;
+        height: 60px;
+        width: 60px;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+        cursor: pointer;
+    }
+
+    .drawer_open span,
+    .drawer_open span:before,
+    .drawer_open span:after {
+        content: '';
+        display: block;
+        height: 3px;
+        width: 25px;
+        border-radius: 3px;
+        background: #333;
+        transition: 0.5s;
+        position: absolute;
+    }
+
+    .drawer_open span:before {
+        bottom: 8px;
+    }
+
+    .drawer_open span:after {
+        top: 8px;
+    }
+
+    #drawer_input:checked~.drawer_open span {
+        background: rgba(255, 255, 255, 0);
+    }
+
+    #drawer_input:checked~.drawer_open span::before {
+        bottom: 0;
+        transform: rotate(45deg);
+    }
+
+    #drawer_input:checked~.drawer_open span::after {
+        top: 0;
+        transform: rotate(-45deg);
+    }
+
+    .burger__content {
+        width: 100%;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 100%;
+        z-index: 99;
+        background: gray;
+        transition: .5s;
+    }
+
+    #drawer_input:checked~.burger__content {
+        left: 0;
+    }
+}
+
+@media all and (min-width: 770px) {
+    .burger__search {
+        display: none;
+    }
+}
+
+@media all and (max-width: 770px) {
+    .header__search {
+        display: none;
+    }
+
+    .header__logo {
+        max-width: 80%;
+        height: auto;
+    }
+
+    .burger__search {
+        display: flex;
+        margin: 0 1em;
+        border: none;
+        outline: none;
+        background: white;
+        border-radius: 0.1em;
+        height: 2em;
+        width: 30%;
+        align-items: center;
+    }
+
+    .burger__content a {
+        font-size: 0.4em;
+    }
+}
+
+.drawer_hidden {
+    display: none;
+}
+
+.error__message {
+    color: red;
 }

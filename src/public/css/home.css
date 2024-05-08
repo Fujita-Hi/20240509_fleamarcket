@@ -11,6 +11,11 @@
     margin-left: 30px;
 }
 
+#recommended-btn {
+    color: red;
+    font-weight: bold;
+}
+
 .main__img {
     display: inline-block;
     justify-content: center;
@@ -20,6 +25,13 @@
     background: gray;
 }
 
-.red {
-    color: red;
+@media all and (max-width: 611px) {
+
+    #mylist-list a,
+    #recommended-list a {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
 }

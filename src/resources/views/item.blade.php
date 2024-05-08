@@ -14,7 +14,7 @@
         <p>{{$item->brand}}</p>
         <p>¥{{ number_format($item->price, 0, '.', ',') }}</p>
         <div class="item__evaluation">
-            @if ($favorites)
+            @if($favorites)
                 <form action="/favorite_delete" method="post">
                     @csrf
                     <input name='item_id' type="hidden" value="{{$item->id}}">
@@ -26,7 +26,7 @@
             @else
                 <form action="/favorite_create" method="post">
                     @csrf
-                    <input name='item_id' type="hidden" value="{{$item->id}}">
+                    <input name="item_id" type="hidden" value="{{$item->id}}">
                     <div class="item__star">
                         <button class='star__button'><i class="fa-regular fa-star"></i></button>
                         <p class="item__star--num">{{$star_count}}</p>
@@ -34,8 +34,8 @@
                 </form>
             @endif
             <div class="item__comment">
-                <a href="/comment"><i class="fa-regular fa-comment"></i></a>
-                <p class="item__comment--num">14</p>
+                <a href="/item/comment/{{$item->id}}"><i class="fa-regular fa-comment"></i></a>
+                <p class="item__comment--num">{{$comment_count}}</p>
             </div>
         </div>
         <form action="">

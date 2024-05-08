@@ -18,4 +18,5 @@ class Item extends Model
         'condition',
         'img'
     ];
+
 }

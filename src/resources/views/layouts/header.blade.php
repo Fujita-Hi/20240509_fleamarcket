@@ -12,15 +12,15 @@
     <header>
         <div class="header__flex">
             <a href="/"><img src="{{ url('/img/logo.svg') }}" alt="logo" class="header__logo"></img></a>
-            <form action="">
+            <form class="header__search" action="/search">
                 @csrf
-                <input class="header__search" type="text" placeholder="何をお探しですか？">
+                <input name="keyword" class="header__search" type="text" placeholder="何をお探しですか？"></input>
             </form>
-            <nav>
+            <nav class="header__nav">
                 <ul>
                     @if (Auth::guest())
                         <li><a href="/login" class="header__login">ログイン</a></li>
-                        <li><a href="" class="header__register">会員登録</a></li>
+                        <li><a href="/register" class="header__register">会員登録</a></li>
                     @else
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -35,6 +35,35 @@
                     <li><a href="/sell" class="header__sell">出品</a></li>
                 </ul>
             </nav>
+            <div class="header__nav--burger">
+                <input id="drawer_input" class="drawer_hidden" type="checkbox">
+                <label for="drawer_input" class="drawer_open"><span></span></label>
+                <nav class="burger__content">
+                    <ul>
+                        <li class=burger__search>
+                            <form action="/search">
+                                @csrf
+                                <input name="keyword" class="burger__search" type="text" placeholder="検索"></input>
+                            </form>
+                        </li>
+                        @if (Auth::guest())
+                            <li><a href="/login" class="header__login">ログイン</a></li>
+                            <li><a href="" class="header__register">会員登録</a></li>
+                        @else
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a class="header__nav-item-link" href="route('logout')"
+                                        onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('ログアウト') }}
+                                </a>
+                            </form>
+                            <li><a href="/mypage" class="header__login">マイページ</a></li>
+                        @endif
+                        <li><a href="/sell" class="header__sell">出品</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
     <main>

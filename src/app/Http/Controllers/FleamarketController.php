@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\CommentRequest;
+use App\Http\Requests\HistoryaddrRequest;
+use App\Http\Requests\AddrRequest;
+use App\Http\Requests\SellRequest;
 use Illuminate\Http\Request;
+use App\Models\Favorite;
+use App\Models\Comment;
+use App\Models\History;
 use App\Models\Addr;
 use App\Models\Item;
 use App\Models\Sell;
-use App\Models\History;
-use App\Models\Comment;
-use App\Models\Favorite;
+use App\Models\User;
 
 class FleamarketController extends Controller
 {
@@ -19,6 +25,19 @@ class FleamarketController extends Controller
     public function home(){
         $items = Item::all();
         $user = auth()->user();
+        if (!$user) {
+            return view('home', ['items' => $items, 'favorites' => $items]);
+        }
+        $favoriteid = Favorite::where('user_id', $user->id)->pluck('item_id');
+        $favorites = Item::whereIn('id', $favoriteid)->get();
+        return view('home', ['items' => $items, 'favorites' => $favorites]);
+    }
+
+    public function search(Request $request)
+    {
+        $user = auth()->user();
+        $keyword = $request->input('keyword');
+        $items = Item::where('name', 'LIKE', '%' . $keyword . '%')->get();
         if (!$user) {
             return view('home', ['items' => $items, 'favorites' => $items]);
         }
@@ -49,6 +68,9 @@ class FleamarketController extends Controller
         $stars = Favorite::where('item_id', $item_id)->pluck('user_id')->toArray();
         $star_count = count($stars);
 
+        $comments = Comment::where('item_id', $item_id)->pluck('user_id')->toArray();
+        $comment_count = count($comments);
+
         $user = auth()->user();
         if (!$user) {
             $favorites  = false;
@@ -56,7 +78,49 @@ class FleamarketController extends Controller
         else{
             $favorites  = in_array($user->id, $stars);
         }
-        return view('item', ['item' => $items, 'favorites' => $favorites, 'star_count' => $star_count]);
+        return view('item', ['item' => $items, 'favorites' => $favorites, 'star_count' => $star_count, 'comment_count' => $comment_count]);
+    }
+
+    public function comment($item_id){
+        $item = Item::findOrFail($item_id);
+        $stars = Favorite::where('item_id', $item_id)->pluck('user_id')->toArray();
+        $star_count = count($stars);
+        $comments_info = Comment::where('item_id', $item_id)->get();
+        $comment_count = count($comments_info->pluck('user_id'));
+        $user = auth()->user();
+        if (!$user) {
+            $favorites  = false;
+        }
+        else{
+            $favorites  = in_array($user->id, $stars);
+        }
+
+        if($comment_count < 1){
+            $comments = [];
+        }
+        else{
+            foreach ($comments_info as $info){
+                $comment_user = User::where('uuid', $info->user_id)->first();
+                $comments[] = [
+                'name' => $comment_user->name,
+                'profileimg' => $comment_user->profileimg,
+                'role' => $comment_user->role,
+                'text' => $info->comment,
+                ];
+            }
+        }
+        return view('comment', ['item' => $item, 'favorites' => $favorites, 'comments' => $comments, 'star_count' => $star_count, 'comment_count' => $comment_count]);
+    }
+
+    public function comment_create(CommentRequest $request){
+        $user_id = Auth::user()->uuid;
+        $comment = [
+            'user_id' => $user_id,
+            'item_id' => $request->item_id,
+            'comment' => $request->comment
+        ];
+        Comment::create($comment);
+        return redirect()->back();
     }
 
     public function history($history_id){
@@ -70,7 +134,7 @@ class FleamarketController extends Controller
         return view('history_update', ['history' => $histories]);
     }
 
-    public function history_addr_update(Request $request){
+    public function history_addr_update(HistoryaddrRequest $request){
         $history_addr = history::where('id', $request->history_id)->first();
         
         $history_addr->code = $request->code;
@@ -120,12 +184,7 @@ class FleamarketController extends Controller
         return view('address', ['item_id' =>$item_id, 'user_addr' => $user_addr]);
     }
 
-    public function payment_method(Request $request){
-        session(['temp_method' => $request->method]);
-        return redirect()->back();
-    } 
-
-    public function temp_addr(Request $request){
+    public function temp_addr(AddrRequest $request){
         $user_id = Auth::user()->id;
         $user_addr = Addr::where('user_id', $user_id)->first();
 
@@ -137,14 +196,16 @@ class FleamarketController extends Controller
         return Redirect::to($url);
     } 
 
-    public function sell_create(Request $request){
+    public function payment_method(Request $request){
+        session(['temp_method' => $request->method]);
+        return redirect()->back();
+    } 
+
+    public function sell_create(SellRequest $request){
         $user_id = Auth::user()->id;
         if ($request->hasFile('upload_file')) {
             $upload_file = $request->file('upload_file');
             $fileName = $upload_file->getClientOriginalName();
-        }
-        else {
-            dd($upload_file);
         }
         //S3にアップロード
         
@@ -180,10 +241,24 @@ class FleamarketController extends Controller
         return view('userprofile', ['user_addr' => $user_addr]);
     }
 
-    public function profile_update(Request $request){
-        $user_id = Auth::user()->id;
+    public function profile_update(ProfileRequest $request){
+        $user = Auth::user();
+        $user_id = $user->id;
         $user_addr = Addr::where('user_id', $user_id)->first();
-        
+        if ($request->hasFile('upload_file')) {
+            $upload_file = $request->file('upload_file');
+            $fileName = $upload_file->getClientOriginalName();
+        }
+        //S3にアップロード
+        if(!empty($upload_file)) {
+            $dir = 'img/profile';
+            $s3_upload = Storage::disk('s3')->putFileAs('/'.$dir, $upload_file, $fileName);
+            $user->profileimg = 'profile/'.$fileName;
+        }
+
+        $user->name = $request->name;
+        $user->save();
+
         if (!$user_addr) {
             $user_addr = [
                 'user_id' => $user_id,
