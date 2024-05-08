@@ -28,7 +28,7 @@ class FleamarketController extends Controller
         if (!$user) {
             return view('home', ['items' => $items, 'favorites' => $items]);
         }
-        $favoriteid = Favorite::where('user_id', $user->id)->pluck('item_id');
+        $favoriteid = Favorite::where('user_id', $user->uuid)->pluck('item_id');
         $favorites = Item::whereIn('id', $favoriteid)->get();
         return view('home', ['items' => $items, 'favorites' => $favorites]);
     }
@@ -41,17 +41,17 @@ class FleamarketController extends Controller
         if (!$user) {
             return view('home', ['items' => $items, 'favorites' => $items]);
         }
-        $favoriteid = Favorite::where('user_id', $user->id)->pluck('item_id');
+        $favoriteid = Favorite::where('user_id', $user->uuid)->pluck('item_id');
         $favorites = Item::whereIn('id', $favoriteid)->get();
         return view('home', ['items' => $items, 'favorites' => $favorites]);
     }
 
     public function mypage(){
         $user = auth()->user();
-        $item_id = Sell::where('user_id', $user->id)->pluck('item_id');
+        $item_id = Sell::where('user_id', $user->uuid)->pluck('item_id');
         $items = Item::whereIn('id', $item_id)->get();
         $histories = [];
-        $historied = History::where('user_id', $user->id)->get();
+        $historied = History::where('user_id', $user->uuid)->get();
         foreach ($historied as $index => $item){
             $item_list = Item::where('id', $item->item_id)->first();
             $histories[] = [
@@ -76,7 +76,7 @@ class FleamarketController extends Controller
             $favorites  = false;
         }
         else{
-            $favorites  = in_array($user->id, $stars);
+            $favorites  = in_array($user->uuid, $stars);
         }
         return view('item', ['item' => $items, 'favorites' => $favorites, 'star_count' => $star_count, 'comment_count' => $comment_count]);
     }
@@ -92,7 +92,7 @@ class FleamarketController extends Controller
             $favorites  = false;
         }
         else{
-            $favorites  = in_array($user->id, $stars);
+            $favorites  = in_array($user->uuid, $stars);
         }
 
         if($comment_count < 1){
@@ -149,7 +149,7 @@ class FleamarketController extends Controller
 
         $temp_addr = session('temp_addr');
         if(!$temp_addr){
-            $user_id = Auth::user()->id;
+            $user_id = Auth::user()->uuid;
             $user_addr = Addr::where('user_id', $user_id)->first();
             if (!$user_addr) {
                 $user_addr = new Addr();
@@ -168,10 +168,10 @@ class FleamarketController extends Controller
     }
 
     public function address($item_id){
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
         $temp_addr = session('temp_addr');
         if(!$temp_addr){
-            $user_id = Auth::user()->id;
+            $user_id = Auth::user()->uuid;
             $user_addr = Addr::where('user_id', $user_id)->first();
             if (!$user_addr) {
                 $user_addr = new Addr();
@@ -185,7 +185,7 @@ class FleamarketController extends Controller
     }
 
     public function temp_addr(AddrRequest $request){
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
         $user_addr = Addr::where('user_id', $user_id)->first();
 
         $user_addr->code = $request->code;
@@ -202,7 +202,7 @@ class FleamarketController extends Controller
     } 
 
     public function sell_create(SellRequest $request){
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
 
         //AWSに実装しS3を使う場合の処理
         //if ($request->hasFile('upload_file')) {
@@ -241,7 +241,7 @@ class FleamarketController extends Controller
     }
 
     public function userprofile(){
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
         $user_addr = Addr::where('user_id', $user_id)->first();
         if (!$user_addr) {
             $user_addr = new Addr();
@@ -251,7 +251,7 @@ class FleamarketController extends Controller
 
     public function profile_update(ProfileRequest $request){
         $user = Auth::user();
-        $user_id = $user->id;
+        $user_id = $user->uuid;
         $user_addr = Addr::where('user_id', $user_id)->first();
         
         //AWSに実装しS3を使う場合の処理
@@ -299,7 +299,7 @@ class FleamarketController extends Controller
     }   
 
     public function favorite_create(Request $request){
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
         $favorite = [
             'user_id' => $user_id,
             'item_id' => $request->item_id
@@ -309,7 +309,7 @@ class FleamarketController extends Controller
     }
 
     public function favorite_delete(Request $request){
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
         Favorite::where('user_id', $user_id)->where('item_id', $request->item_id)->delete();
         return redirect()->back();
     }
@@ -320,7 +320,7 @@ class FleamarketController extends Controller
         //AWSに実装しS3を使う場合の処理
         //$file = Storage::disk('s3')->get($path);
         //return response($file, 200)->header('Content-Type', 'image/jpeg');
-        
+
         //ローカルを使う場合の処理
         $file = Storage::disk('public')->get($path);
         return response($file, 200)->header('Content-Type', 'image/jpeg');
