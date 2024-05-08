@@ -1,0 +1,73 @@
+main {
+    width: 100%;
+}
+
+.addr__contents {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    margin-top: 50px;
+}
+
+.addr__title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.addr__contents input {
+    width: 40vw;
+    margin-bottom: 60px;
+    height: 2em;
+}
+
+.addr__contents textarea {
+    width: 40vw;
+    margin-bottom: 60px;
+}
+
+.addr__contents textarea {
+    width: 40vw;
+    margin-bottom: 60px;
+}
+
+.sell__img {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px dotted red;
+    color: red;
+    padding: 2em 0;
+    border-radius: 5px;
+    background: none;
+}
+
+.addr__contents button {
+    display: flex;
+    background: red;
+    color: white;
+    font-weight: bold;
+    border: none;
+    width: 100%;
+    height: 2em;
+    font-size: 1em;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.3em;
+    color: #696969;
+}
+
+h3 {
+    font-size: 1em;
+}
+
+hr {
+    margin-bottom: 20px;
+}

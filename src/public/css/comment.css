@@ -1,0 +1,63 @@
+main {
+    margin: 100px 8vw 0 8vw;
+}
+
+.item__img {
+    width: 30vw;
+    height: 30vw;
+    background: gray;
+}
+
+.item__column {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cat1 {
+    background-size: cover;
+}
+
+.cat2 {
+    background-size: cover;
+}
+
+@media all and (min-width: 768px) {
+    main {
+        display: flex;
+    }
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+.item__evaluation {
+    display: inline-flex;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+    justify-content: center;
+}
+
+.item__evaluation p {
+    font-size: 0.5em;
+}
+
+.item__star {
+    margin-right: 1em;
+}
+
+.comment__contants {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment__contants input,
+.comment__contants textarea {
+    width: 100%;
+}

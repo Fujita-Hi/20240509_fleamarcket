@@ -1,0 +1,25 @@
+.switch__button {
+    margin: 10px 50px;
+}
+
+.switch__button button {
+    border: none;
+    background-color: transparent;
+}
+
+#mylist-btn {
+    margin-left: 30px;
+}
+
+.main__img {
+    display: inline-block;
+    justify-content: center;
+    margin: 30px 50px;
+    height: 200px;
+    width: 200px;
+    background: gray;
+}
+
+.red {
+    color: red;
+}

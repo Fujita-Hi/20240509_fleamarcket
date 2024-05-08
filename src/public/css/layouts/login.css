@@ -1,0 +1,41 @@
+main {
+    width: 100%;
+}
+
+.login__contents {
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    margin: 50px auto;
+}
+
+.login__title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5em;
+}
+
+.login__contents input {
+    width: 40vw;
+    margin-bottom: 60px;
+    height: 2em;
+}
+
+.login__contents button {
+    display: flex;
+    background: red;
+    color: white;
+    font-weight: bold;
+    border: none;
+    width: 100%;
+    height: 2em;
+    font-size: 1em;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.login__contents a {
+    text-align: center;
+}
