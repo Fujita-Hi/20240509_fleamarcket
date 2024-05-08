@@ -203,15 +203,23 @@ class FleamarketController extends Controller
 
     public function sell_create(SellRequest $request){
         $user_id = Auth::user()->id;
+
+        //AWSに実装しS3を使う場合の処理
+        //if ($request->hasFile('upload_file')) {
+        //    $upload_file = $request->file('upload_file');
+        //    $fileName = $upload_file->getClientOriginalName();
+        //}
+        //S3にアップロード
+        
+        //if(!empty($upload_file)) {
+        //    $dir = 'img';
+        //    $s3_upload = Storage::disk('s3')->putFileAs('/'.$dir, $upload_file, $fileName);
+        //}
+
         if ($request->hasFile('upload_file')) {
             $upload_file = $request->file('upload_file');
             $fileName = $upload_file->getClientOriginalName();
-        }
-        //S3にアップロード
-        
-        if(!empty($upload_file)) {
-            $dir = 'img';
-            $s3_upload = Storage::disk('s3')->putFileAs('/'.$dir, $upload_file, $fileName);
+            $request->file('upload_file')->storeAs('img', $fileName, 'public');
         }
 
         $item = new Item();
@@ -245,16 +253,27 @@ class FleamarketController extends Controller
         $user = Auth::user();
         $user_id = $user->id;
         $user_addr = Addr::where('user_id', $user_id)->first();
+        
+        //AWSに実装しS3を使う場合の処理
+        //if ($request->hasFile('upload_file')) {
+        //    $upload_file = $request->file('upload_file');
+        //    $fileName = $upload_file->getClientOriginalName();
+        //}
+        //S3にアップロード
+        //if(!empty($upload_file)) {
+        //    $dir = 'img/profile';
+        //    $s3_upload = Storage::disk('s3')->putFileAs('/'.$dir, $upload_file, $fileName);
+        //    $user->profileimg = 'profile/'.$fileName;
+        //}
+
+        //ローカルを使う場合の処理
         if ($request->hasFile('upload_file')) {
             $upload_file = $request->file('upload_file');
             $fileName = $upload_file->getClientOriginalName();
+            $request->file('upload_file')->storeAs('img', $fileName, 'public');
         }
-        //S3にアップロード
-        if(!empty($upload_file)) {
-            $dir = 'img/profile';
-            $s3_upload = Storage::disk('s3')->putFileAs('/'.$dir, $upload_file, $fileName);
-            $user->profileimg = 'profile/'.$fileName;
-        }
+
+        
 
         $user->name = $request->name;
         $user->save();
@@ -297,7 +316,13 @@ class FleamarketController extends Controller
 
     public function showImage($filename){
         $path = 'img/' .$filename;
-        $file = Storage::disk('s3')->get($path);
+
+        //AWSに実装しS3を使う場合の処理
+        //$file = Storage::disk('s3')->get($path);
+        //return response($file, 200)->header('Content-Type', 'image/jpeg');
+        
+        //ローカルを使う場合の処理
+        $file = Storage::disk('public')->get($path);
         return response($file, 200)->header('Content-Type', 'image/jpeg');
     }
 }
