@@ -46,9 +46,9 @@ Route::post('/profile_update', [FleamarketController::class, 'profile_update'])-
 
 Route::get('/sell', function () {
     return view('sell');
-})->middleware(['auth', 'verified'])->middleware(['auth', 'verified'])->name('/login');
+})->middleware(['auth', 'verified'])->middleware(['auth', 'verified', 'can:owner-higher'])->name('/login');
 
-Route::post('/sell_create', [FleamarketController::class, 'sell_create'])->middleware(['auth', 'verified'])->name('/login');
+Route::post('/sell_create', [FleamarketController::class, 'sell_create'])->middleware(['auth', 'verified', 'can:owner-higher'])->name('/login');
 
 Route::get('/purchase/address/{item_id}', [FleamarketController::class, 'address'])->middleware(['auth', 'verified'])->name('/login');
 

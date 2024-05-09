@@ -30,9 +30,14 @@
                                 {{ __('ログアウト') }}
                             </a>
                         </form>
+                        @can('admin-higher')
+                            <li><a href="/sell" class="header__admin">管理</a></li>
+                        @endcan
                         <li><a href="/mypage" class="header__login">マイページ</a></li>
                     @endif
+                    @can('owner-higher')
                     <li><a href="/sell" class="header__sell">出品</a></li>
+                    @endcan
                 </ul>
             </nav>
             <div class="header__nav--burger">
@@ -58,9 +63,14 @@
                                     {{ __('ログアウト') }}
                                 </a>
                             </form>
+                            @can('admin-higher')
+                                <li><a href="/sell" class="header__admin">管理</a></li>
+                            @endcan
                             <li><a href="/mypage" class="header__login">マイページ</a></li>
                         @endif
-                        <li><a href="/sell" class="header__sell">出品</a></li>
+                        @can('owner-higher')
+                            <li><a href="/sell" class="header__sell">出品</a></li>
+                        @endcan
                     </ul>
                 </nav>
             </div>
