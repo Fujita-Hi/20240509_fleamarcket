@@ -15,6 +15,7 @@
     </div>
     <div class="purchase__payment">
         <form action="/payment_method" method="post">
+            @csrf
             <div class="purchase__payment--header">
                 <h2>支払い方法</h2>
                 <button class="purchase__payment--button">変更する</button>
@@ -67,6 +68,7 @@
         </table>
     </div>
     <form action="/paycreate">
+        @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}">
         <input type="hidden" name="amount" value="{{ $item->price }}">
         <input type="hidden" name="name" value="{{ $item->name }}">

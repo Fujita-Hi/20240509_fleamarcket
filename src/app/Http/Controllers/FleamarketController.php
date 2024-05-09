@@ -28,8 +28,8 @@ class FleamarketController extends Controller
         if (!$user) {
             return view('home', ['items' => $items, 'favorites' => $items]);
         }
-        $favoriteid = Favorite::where('user_id', $user->uuid)->pluck('item_id');
-        $favorites = Item::whereIn('id', $favoriteid)->get();
+        $favorite_id = $user->favorites->pluck('item_id');
+        $favorites = Item::whereIn('id', $favorite_id)->get();
         return view('home', ['items' => $items, 'favorites' => $favorites]);
     }
 
@@ -41,17 +41,17 @@ class FleamarketController extends Controller
         if (!$user) {
             return view('home', ['items' => $items, 'favorites' => $items]);
         }
-        $favoriteid = Favorite::where('user_id', $user->uuid)->pluck('item_id');
-        $favorites = Item::whereIn('id', $favoriteid)->get();
+        $favorite_id = $user->favorites->pluck('item_id');
+        $favorites = Item::whereIn('id', $favorite_id)->get();
         return view('home', ['items' => $items, 'favorites' => $favorites]);
     }
 
     public function mypage(){
         $user = auth()->user();
-        $item_id = Sell::where('user_id', $user->uuid)->pluck('item_id');
+        $item_id = $user->sells->pluck('item_id');
         $items = Item::whereIn('id', $item_id)->get();
         $histories = [];
-        $historied = History::where('user_id', $user->uuid)->get();
+        $historied = $user->histories;
         foreach ($historied as $index => $item){
             $item_list = Item::where('id', $item->item_id)->first();
             $histories[] = [
@@ -65,12 +65,10 @@ class FleamarketController extends Controller
 
     public function item($item_id){
         $items = Item::findOrFail($item_id);
-        $stars = Favorite::where('item_id', $item_id)->pluck('user_id')->toArray();
+        $stars = $items->favorites->pluck('user_id')->toArray();
         $star_count = count($stars);
-
-        $comments = Comment::where('item_id', $item_id)->pluck('user_id')->toArray();
-        $comment_count = count($comments);
-
+        $comments_info = $items->comments;
+        $comment_count = count($comments_info->pluck('user_id'));
         $user = auth()->user();
         if (!$user) {
             $favorites  = false;
@@ -82,10 +80,10 @@ class FleamarketController extends Controller
     }
 
     public function comment($item_id){
-        $item = Item::findOrFail($item_id);
-        $stars = Favorite::where('item_id', $item_id)->pluck('user_id')->toArray();
+        $items = Item::findOrFail($item_id);
+        $stars = $items->favorites->pluck('user_id')->toArray();
         $star_count = count($stars);
-        $comments_info = Comment::where('item_id', $item_id)->get();
+        $comments_info = $items->comments;
         $comment_count = count($comments_info->pluck('user_id'));
         $user = auth()->user();
         if (!$user) {
@@ -109,7 +107,7 @@ class FleamarketController extends Controller
                 ];
             }
         }
-        return view('comment', ['item' => $item, 'favorites' => $favorites, 'comments' => $comments, 'star_count' => $star_count, 'comment_count' => $comment_count]);
+        return view('comment', ['item' => $items, 'favorites' => $favorites, 'comments' => $comments, 'star_count' => $star_count, 'comment_count' => $comment_count]);
     }
 
     public function comment_create(CommentRequest $request){
@@ -146,24 +144,24 @@ class FleamarketController extends Controller
 
     public function purchase($item_id){
         $items = Item::findOrFail($item_id);
-
         $temp_addr = session('temp_addr');
         if(!$temp_addr){
             $user_id = Auth::user()->uuid;
+            $user = auth()->user();
             $user_addr = Addr::where('user_id', $user_id)->first();
+            //$user_addr = $user->addrs;
             if (!$user_addr) {
                 $user_addr = new Addr();
             }
+            session(['temp_addr' => $user_addr]);
         }
         else{
             $user_addr = $temp_addr;
         }
-
         $payment_method = session('temp_method');
         if(!$payment_method){
             $payment_method = 'card';
         }
-
         return view('purchase', ['item' => $items, 'user_addr' => $user_addr, 'payment_method' => $payment_method]);
     }
 
@@ -187,7 +185,6 @@ class FleamarketController extends Controller
     public function temp_addr(AddrRequest $request){
         $user_id = Auth::user()->uuid;
         $user_addr = Addr::where('user_id', $user_id)->first();
-
         $user_addr->code = $request->code;
         $user_addr->addr = $request->addr;
         $user_addr->building = $request->building;
@@ -252,8 +249,9 @@ class FleamarketController extends Controller
     public function profile_update(ProfileRequest $request){
         $user = Auth::user();
         $user_id = $user->uuid;
-        $user_addr = Addr::where('user_id', $user_id)->first();
-        
+        //$user_addr = Addr::where('user_id', $user_id)->first();
+        $user_addr = $user->addrs;
+
         //AWSに実装しS3を使う場合の処理
         //if ($request->hasFile('upload_file')) {
         //    $upload_file = $request->file('upload_file');

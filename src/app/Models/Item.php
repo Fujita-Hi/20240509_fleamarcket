@@ -19,4 +19,20 @@ class Item extends Model
         'img'
     ];
 
+    public function comments(){
+        return $this->hasMany('App\Models\Comment', 'item_id', 'id');
+    }
+
+    public function favorites(){
+        return $this->hasMany('App\Models\Favorite', 'item_id', 'id');
+    }
+
+    public function histories(){
+        return $this->hasMany('App\Models\History', 'item_id', 'id');
+    }
+
+    public function sells(){
+        return $this->hasMany('App\Models\Sell', 'item_id', 'id');
+    }
+
 }

@@ -46,4 +46,24 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     
+    public function addrs(){
+        return $this->hasMany('App\Models\Addr', 'user_id', 'uuid');
+    }
+
+    public function comments(){
+        return $this->hasMany('App\Models\Comment', 'user_id', 'uuid');
+    }
+
+    public function favorites(){
+        return $this->hasMany('App\Models\Favorite', 'user_id', 'uuid');
+    }
+
+    public function histories(){
+        return $this->hasMany('App\Models\History', 'user_id', 'uuid');
+    }
+
+    public function sells(){
+        return $this->hasMany('App\Models\Sell', 'user_id', 'uuid');
+    }
+
 }

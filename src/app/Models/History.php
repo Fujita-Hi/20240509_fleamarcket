@@ -18,4 +18,12 @@ class History extends Model
         'addr',
         'building',
     ];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User', 'uuid', 'user_id');
+    }
+
+    public function item(){
+        return $this->belongsTo('App\Models\Item', 'id', 'item_id');
+    }
 }

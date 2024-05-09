@@ -26,6 +26,9 @@ class PaymentController extends Controller
 
     public function paycreate(PayRequest $request){
         $payment_method = session('temp_method');
+        if (!$payment_method){
+            $payment_method = 'card';
+        }
         return view('paycreate', ['payment_method' =>$payment_method, 'item_info' => $request]);
     }
 
@@ -69,7 +72,7 @@ class PaymentController extends Controller
         }
 
         // 購入履歴
-        $user_id = Auth::user()->id;
+        $user_id = Auth::user()->uuid;
         $temp_addr = session('temp_addr');
         $history = [
                 'user_id' => $user_id,
@@ -81,7 +84,8 @@ class PaymentController extends Controller
                 'building' => $temp_addr->building
         ];
         History::create($history);
- 
+        session()->forget('temp_method');
+        session()->forget('temp_addr');
         return view('paycomplete', ['response' =>$response]);
     }
 }

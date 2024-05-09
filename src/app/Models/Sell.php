@@ -12,4 +12,12 @@ class Sell extends Model
         'user_id',
         'item_id',
     ];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User', 'uuid', 'user_id');
+    }
+
+    public function item(){
+        return $this->belongsTo('App\Models\Item', 'id', 'item_id');
+    }
 }

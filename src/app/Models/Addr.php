@@ -15,4 +15,9 @@ class Addr extends Model
         'addr',
         'building',
     ];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User', 'uuid', 'user_id');
+    }
+
 }
