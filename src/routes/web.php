@@ -40,7 +40,7 @@ Route::get('/history_update/{history_id}', [FleamarketController::class, 'histor
 Route::post('/history_addr_update', [FleamarketController::class, 'history_addr_update'])->middleware(['auth', 'verified'])->name('/login');
 
 
-Route::get('/mypage/profile', [FleamarketController::class, 'userprofile']);
+Route::get('/mypage/profile', [FleamarketController::class, 'userprofile'])->middleware(['auth', 'verified'])->name('/login');
 
 Route::post('/profile_update', [FleamarketController::class, 'profile_update'])->middleware(['auth', 'verified'])->name('/login');
 
