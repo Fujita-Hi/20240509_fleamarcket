@@ -323,4 +323,19 @@ class FleamarketController extends Controller
         $file = Storage::disk('public')->get($path);
         return response($file, 200)->header('Content-Type', 'image/jpeg');
     }
+
+    public function admin(Request $request){
+        $users = User::all();
+        return view('admin', ['users' => $users]);
+    }
+
+    public function role_update(Request $request){
+        User::where('uuid', $request->user_uuid)->update(['role' => $request->role]);
+        return redirect()->back();
+    }
+
+    public function user_delete(Request $request){
+        User::where('uuid', $request->user_uuid)->delete();
+        return redirect()->back();
+    }
 }

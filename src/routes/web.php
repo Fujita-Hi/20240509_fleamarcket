@@ -52,13 +52,19 @@ Route::post('/sell_create', [FleamarketController::class, 'sell_create'])->middl
 
 Route::get('/purchase/address/{item_id}', [FleamarketController::class, 'address'])->middleware(['auth', 'verified'])->name('/login');
 
-Route::post('/favorite_create', [FleamarketController::class, 'favorite_create'])->middleware(['auth', 'verified'])->name('/login');;
+Route::post('/favorite_create', [FleamarketController::class, 'favorite_create'])->middleware(['auth', 'verified'])->name('/login');
 
-Route::post('/favorite_delete', [FleamarketController::class, 'favorite_delete'])->middleware(['auth', 'verified'])->name('/login');;
+Route::post('/favorite_delete', [FleamarketController::class, 'favorite_delete'])->middleware(['auth', 'verified'])->name('/login');
 
 Route::get('/images/{filename}', [FleamarketController::class, 'showImage'])->name('show.image')->where('filename', '.*');
 
 Route::post('/upload', [FleamarketController::class, 'upload'])->name('upload');
+
+Route::get('/admin', [FleamarketController::class, 'admin'])->middleware(['auth', 'verified', 'can:admin-higher'])->name('/login');
+
+Route::post('/role_update', [FleamarketController::class, 'role_update'])->middleware(['auth', 'verified', 'can:admin-higher'])->name('/login');
+
+Route::post('/user_delete', [FleamarketController::class, 'user_delete'])->middleware(['auth', 'verified', 'can:admin-higher'])->name('/login');
 
 Route::post('/pay', [PaymentController::class, 'pay']);
 

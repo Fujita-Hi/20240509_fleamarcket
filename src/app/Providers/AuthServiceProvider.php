@@ -29,11 +29,11 @@ class AuthServiceProvider extends ServiceProvider
         });
         // 店舗管理者以上に許可
         Gate::define('owner-higher', function ($user) {
-        return ($user->role >= 1 && $user->role <= 10);
+        return ($user->role >= 1 && $user->role <= 100);
         });
-        // 一般ユーザー以上に許可
+        //利用者以上に許可
         Gate::define('user-higher', function ($user) {
-        return ($user->role < 1);
+        return ($user->role > 0);
         });
 
     }
