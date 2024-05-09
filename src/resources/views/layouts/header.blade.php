@@ -31,7 +31,7 @@
                             </a>
                         </form>
                         @can('admin-higher')
-                            <li><a href="/sell" class="header__admin">管理</a></li>
+                            <li><a href="/admin" class="header__admin">管理</a></li>
                         @endcan
                         <li><a href="/mypage" class="header__login">マイページ</a></li>
                     @endif
@@ -64,7 +64,7 @@
                                 </a>
                             </form>
                             @can('admin-higher')
-                                <li><a href="/sell" class="header__admin">管理</a></li>
+                                <li><a href="/admin" class="header__admin">管理</a></li>
                             @endcan
                             <li><a href="/mypage" class="header__login">マイページ</a></li>
                         @endif
